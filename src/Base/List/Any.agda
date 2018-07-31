@@ -21,7 +21,6 @@ open import Base.Decide
   as Decide
   hiding ( ind
          ; rec
-         ; map
          )
 
 open import Base.List.Core
@@ -121,4 +120,4 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} where
   Decide:Any {P} {[]} = no λ()
   Decide:Any {P} {x ∷ xs} with decide (P x)
   ... | yes Px  = yes (here Px)
-  ... | no  ¬Px = Decide.map there (tail ¬Px) (Decide:Any {P} {xs})
+  ... | no  ¬Px = Decide.bimap there (tail ¬Px) (Decide:Any {P} {xs})

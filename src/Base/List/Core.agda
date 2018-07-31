@@ -24,7 +24,6 @@ open import Base.Equality
 open import Base.Decide
   hiding ( ind
          ; rec
-         ; map
          )
 open import Base.Nat
   as ℕ
