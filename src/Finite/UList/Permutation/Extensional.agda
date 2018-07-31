@@ -16,6 +16,7 @@ open import Base.LogicalEquivalence
          ; sym
          ; trans
          )
+open import Base.Nat
 
 open import Finite.UList
 open import Finite.UList.Sublist
@@ -82,6 +83,19 @@ module _ {ℓ} {A : Type ℓ} where
     g a (there ψ) = UL∃.tail (proj₂ (ϕ a) (there (≼-preserves-∈ (delete-≼ x∈ys) ψ))) x≢a where
       x≢a : x ≢ a
       x≢a = ¬.contramap (≡.rec (_∈ delete x∈ys) ψ _ ∘ sym) (∉⇒¬∈ (delete-∈-∉ x∈ys))
+
+  ≈-preserves-length : ∀ {xs ys} → xs ≈ ys → length xs ≡ length ys
+  ≈-preserves-length {[]} {ys} xs≈ys rewrite []≈ xs≈ys = refl
+  ≈-preserves-length {x ∷ xs and x∉xs} {ys} x∷xs≈ys =
+      length (x ∷ xs and x∉xs)
+        ≡⟨⟩
+      succ (length xs)
+        ≡⟨ ≈-preserves-length (≈delete x∷xs≈ys) |in-context succ ⟩
+      succ (length (delete (proj₁ (x∷xs≈ys x) (here refl))))
+        ≡⟨ delete-length (proj₁ (x∷xs≈ys x) (here refl)) ⟩⁻¹
+      length ys
+        ∎
+    where open ≡Reasoning
 
   enumerations-are-permutations :
       (xs : UList A) (ϕ : Enumeration xs)

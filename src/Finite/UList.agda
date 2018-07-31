@@ -71,7 +71,7 @@ instance
       {A : Type ℓ₁} ⦃ _ : Finite A ⦄
       {P : A → Type ℓ₂} ⦃ _ : ∀ {x} → Decide (P x) ⦄
     → Decide (Σ A P)
-  Finite⇒Decide:Σ {A = A} {P} = Decide.map aux₁ aux₂ (decide (Any P (elements-of A))) where
+  Finite⇒Decide:Σ {A = A} {P} = Decide.bimap aux₁ aux₂ (decide (Any P (elements-of A))) where
 
     aux₁ : Any P (elements-of A) → Σ A P
     aux₁ ∃enumerationP = let (x , _ , Px) = extract ∃enumerationP

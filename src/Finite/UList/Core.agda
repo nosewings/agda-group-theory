@@ -19,8 +19,6 @@ open import Base.Relation
          )
 open import Base.Equality
 open import Base.Decide
-  hiding ( map
-         )
 open import Base.Nat
   using ( ℕ
         ; zero

@@ -14,6 +14,7 @@ open import Base.Relation
 open import Base.Equality
   as ≡
 open import Base.Decide
+  as Decide
 open import Base.Nat
 
 open import Finite.UList.Core
@@ -76,6 +77,10 @@ module _ {ℓ} {A : Type ℓ} where
   delete-≼ {a} (here  refl) = a ∺ Base.Relation.refl
   delete-≼ {a} (there x∈xs) = _ ∷ delete-≼ x∈xs
 
+  delete-length : ∀ {a xs} (a∈xs : a ∈ xs) → length xs ≡ succ (length (delete a∈xs))
+  delete-length (here  refl) = refl
+  delete-length (there a∈xs) = cong succ (delete-length a∈xs)
+
 map-∈ :
   ∀ {ℓ₁ ℓ₂ ℓ₃}
     {A : Type ℓ₁} {P : A → Type ℓ₂} {Q : A → Type ℓ₃}
@@ -94,7 +99,5 @@ instance
     → Decide (Any P xs)
   Decide:Any {P = P} {xs = []} = no (λ ())
   Decide:Any {P = P} {xs = x ∷ xs and x∉xs} with decide (P x)
-  ... | yes Px = yes (here Px)
-  ... | no  ¬Px with Decide:Any {P = P} {xs = xs}
-  ... | yes ∃xsP = yes (there ∃xsP)
-  ... | no  ∄xsP = no  (⊎.rec ¬Px ∄xsP ∘ to-⊎)
+  ... | yes  Px = yes (here Px)
+  ... | no  ¬Px = Decide.bimap there (flip tail ¬Px) Decide:Any

@@ -21,7 +21,6 @@ open import Finite.UList
   as UList
 open import Finite.UList.Permutation
 open import Finite.UList.Permutation.Extensional
-open import Finite.UList.Permutation.Intensional
 open import Finite.UVec
   as UVec
 open import Finite.Equivalence
@@ -94,7 +93,7 @@ abstract
       UVec.Finite.size uvfin-B
         ≡⟨ to-UList-length (UVec.Size.elements (UVec.Finite.has-size uvfin-B)) ⟩⁻¹
       UList.length bs′
-        ≡⟨ ≈-preserves-length (extensional⇒intensional (enumerations-are-permutations bs′ ψ′ bs ψ)) ⟩
+        ≡⟨ ≈-preserves-length (enumerations-are-permutations bs′ ψ′ bs ψ) ⟩
       UList.length bs
         ∎ where
 

@@ -32,8 +32,8 @@ rec :
   → (Decide A → P)
 rec = ind _
 
-map : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → (A → B) → (B → A) → Decide A → Decide B
-map f g = rec (yes ∘ f) (no ∘ ¬.contramap g)
+bimap : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → (A → B) → (B → A) → Decide A → Decide B
+bimap f g = rec (yes ∘ f) (no ∘ ¬.contramap g)
 
 decide : ∀ {ℓ} (A : Type ℓ) → ⦃ _ : Decide A ⦄ → Decide A
 decide A = !
