@@ -167,7 +167,7 @@ module _
         ϕ (ε · ε) ≡⟨ right-id ε |in-context ϕ ⟩
         ϕ ε       ∎
 
-    homo-⁻¹ : (x : G₁) → ϕ (x ⁻¹) ≡ ϕ x ⁻¹
+    homo-⁻¹ : (x : G₁) → ϕ (x ⁻¹) ≡ (ϕ x) ⁻¹
     homo-⁻¹ x = right-inv-unique $
         ϕ x · ϕ (x ⁻¹) ≡⟨ homo-· x (x ⁻¹) ⟩⁻¹
         ϕ (x · x ⁻¹)   ≡⟨ right-inv x |in-context ϕ ⟩

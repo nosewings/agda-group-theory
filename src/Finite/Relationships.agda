@@ -20,7 +20,6 @@ open import Base.Fin
 open import Finite.UList
   as UList
 open import Finite.UList.Permutation
-open import Finite.UList.Permutation.Extensional
 open import Finite.UVec
   as UVec
 open import Finite.Equivalence
