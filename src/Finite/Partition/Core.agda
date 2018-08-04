@@ -120,7 +120,7 @@ module _
       elements          c′ = x ∷ pass p and ≼-preserves-∉ (pass-is-sublist p) x∉xs
       elements-related  c′ = pass-passes p
       elements-sublist  c′ = x ∷ pass-is-sublist p
-      elements-complete c′ = inₗ (here refl) ∷ UL∀.map (λ _ → ⊎.bimap there (UL∀.apply (fail-fails p))) (conservation p)
+      elements-complete c′ = inₗ (here refl) ∷ UL∀.map (λ _ → ⊎.map there (UL∀.apply (fail-fails p))) (conservation p)
 
       -- The recursive call, which yields a partition relative to
       -- fail(p). Remember that fail(p) is essentially xs∖pass(p), and pass(p)
@@ -151,20 +151,20 @@ module _
       rp′ : RelativePartition A _~_ (x ∷ xs and x∉xs)
       classes          rp′ = c′ ∷ cs′
       classes-complete rp′ =
-          here refl (L∀.map-compat x≁head) ∷ ULP.disjunct-elim p (UL∀.map rel-x (pass-passes p))
-                                                                 (UL∀.map generalize-classes-rel (classes-complete rp)) where
+          here refl (L∀.map-compat x≁head _) ∷ ULP.disjunct-elim p (UL∀.map rel-x (pass-passes p))
+                                                                   (UL∀.map generalize-classes-rel (classes-complete rp)) where
 
         rel-x :
           ∀ a
           → a ~ x
           → L∃!.One ((a ~_) ∘ UL⁺.head ∘ elements) (c′ ∷ cs′)
-        rel-x a a~x = here a~x (L∀.map-compat (¬.contramap (trans (sym a~x)) ∘ x≁head))
+        rel-x a a~x = here a~x (L∀.map-compat (¬.contramap (trans (sym a~x)) ∘ x≁head) _)
 
         generalize-classes-rel :
           ∀ a
           → L∃!.One ((a ~_) ∘ UL⁺.head ∘ elements) (classes rp)
           → L∃!.One ((a ~_) ∘ UL⁺.head ∘ elements) (c′ ∷ cs′)
-        generalize-classes-rel a ϕ = nothere a≁x (L∃!.map-over (λ _ → id) (λ _ → id) ϕ) where
+        generalize-classes-rel a ϕ = nothere a≁x (L∃!.map-over-map id id ϕ) where
           a≁x : a ≁ x
           a≁x = let (c , _ , ψ) = L∃!.extract ϕ
                 in ¬.contramap (λ a~x → sym a~x ⟨ trans ⟩ ψ) (x≁head c)

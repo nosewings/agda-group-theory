@@ -26,13 +26,14 @@ open import Finite.UList.Core
         ; here
         ; there
         ; _∈_
+        ; ∈-map
         )
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
 
-  tail : {x : A} {xs : UList A} {x∉xs : x ∉ xs} → Any P (x ∷ xs and x∉xs) → ¬ P x → Any P xs
-  tail (here  Px  ) ¬Px = Px ↯ ¬Px
-  tail (there ∃xsP) ¬Px = ∃xsP
+  tail : {x : A} {xs : UList A} {x∉xs : x ∉ xs} → ¬ P x → Any P (x ∷ xs and x∉xs) → Any P xs
+  tail ¬Px (here  Px  ) = Px ↯ ¬Px
+  tail ¬Px (there ∃xsP) = ∃xsP
 
   extract : ∀ {xs : UList A} → Any P xs → Σ[ x ] (x ∈ xs × P x)
   extract (here  Px  ) = _ , here refl , Px
@@ -69,7 +70,7 @@ module _ {ℓ} {A : Type ℓ} where
     x≢a = ¬.contramap (≡.rec (_∈ xs) a∈xs _ ∘ sym) (∉⇒¬∈ x∉xs)
 
   delete-∈ : ∀ {x xs} (x∈xs : x ∈ xs) {a} (a∈xs : a ∈ xs) → a ≢ x → a ∈ delete x∈xs
-  delete-∈ (here  refl) a∈xs         a≢x = tail a∈xs (sym a≢x)
+  delete-∈ (here  refl) a∈xs         a≢x = tail (sym a≢x) a∈xs
   delete-∈ (there x∈xs) (here  refl) a≢x = here refl
   delete-∈ (there x∈xs) (there a∈xs) a≢x = there (delete-∈ x∈xs a∈xs a≢x)
 
@@ -90,14 +91,14 @@ map-∈ :
 map-∈ f (here  Px  ) = here  (f _ (here refl) Px)
 map-∈ f (there ∃xsP) = there (map-∈ (λ x → f x ∘ there) ∃xsP)
 
-instance
-  Decide:Any :
-    ∀ {ℓ₁ ℓ₂}
-      {A : Type ℓ₁}
-      {P : A → Type ℓ₂} ⦃ _ : ∀ {x} → Decide (P x) ⦄
-      {xs : UList A}
-    → Decide (Any P xs)
-  Decide:Any {P = P} {xs = []} = no (λ ())
-  Decide:Any {P = P} {xs = x ∷ xs and x∉xs} with decide (P x)
+module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
+
+  any? : (∀ x → Decide (P x)) → ∀ xs → Decide (Any P xs)
+  any? ϕ []       = no (λ ())
+  any? ϕ (x ∷ xs and _) with ϕ x
   ... | yes  Px = yes (here Px)
-  ... | no  ¬Px = Decide.bimap there (flip tail ¬Px) Decide:Any
+  ... | no  ¬Px = Decide.map there (tail ¬Px) (any? ϕ xs)
+
+  instance
+    Decide:Any : ⦃ _ : ∀ {x} → Decide (P x) ⦄ → ∀ {xs} → Decide (Any P xs)
+    Decide:Any = any? !!! _

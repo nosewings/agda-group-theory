@@ -10,27 +10,27 @@ open import Base.Relation
 open import Base.Equality
 open import Base.WellFounded
 
-infix 4 _≤_ _<_ _≤′_ _<′_
+infix 4 _≤_ _≥_ _<_ _>_ _≤′_ _≥′_ _<′_ _>′_
 
 open import Base.Nat.Core
   public
 
-fold :
+foldr :
   ∀ {ℓ}
     {A : Type ℓ}
   → (A → A) → A → ℕ → A
-fold f e zero     = e
-fold f e (succ n) = f (fold f e n)
+foldr f e zero     = e
+foldr f e (succ n) = f (foldr f e n)
 
 abstract
 
-  fold-id : ∀ {ℓ} {A : Type ℓ} (e : A) n → fold id e n ≡ e
-  fold-id e zero     = refl
-  fold-id e (succ n) = fold-id e n
+  foldr-id : ∀ {ℓ} {A : Type ℓ} (e : A) n → foldr id e n ≡ e
+  foldr-id e zero     = refl
+  foldr-id e (succ n) = foldr-id e n
 
-  +-fold : ∀ m n → m + n ≡ fold succ n m
-  +-fold zero     n = refl
-  +-fold (succ m) n = cong succ (+-fold m n)
+  +-is-foldr : ∀ m n → m + n ≡ foldr succ n m
+  +-is-foldr zero     n = refl
+  +-is-foldr (succ m) n = cong succ (+-is-foldr m n)
 
   +-assoc : Associative _+_
   +-assoc zero     y z = refl
@@ -51,9 +51,9 @@ abstract
       succ y + succ x     ∎
     where open ≡Reasoning
 
-  *-fold : ∀ m n → m * n ≡ fold (n +_) zero m
-  *-fold zero     n = refl
-  *-fold (succ m) n = cong (n +_) (*-fold m n)
+  *-is-foldr : ∀ m n → m * n ≡ foldr (n +_) zero m
+  *-is-foldr zero     n = refl
+  *-is-foldr (succ m) n = cong (n +_) (*-is-foldr m n)
 
 data _≤_ : Relation 0 ℕ where
   zero : ∀ {n} → zero ≤ n
@@ -64,17 +64,26 @@ data _≤_ : Relation 0 ℕ where
 ≤succ (succ m≤n) = succ (≤succ m≤n)
 
 _≥_ : Relation 0 ℕ
-m ≥ n = n ≤ m
+_≥_ = flip _≤_
 
 _<_ : Relation 0 ℕ
 m < n = succ m ≤ n
+
+_>_ : Relation 0 ℕ
+_>_ = flip _<_
 
 data _≤′_ (m : ℕ) : ℕ → Type 0 where
   refl : m ≤′ m
   succ : ∀ {n} → m ≤′ n → m ≤′ succ n
 
+_≥′_ : Relation 0 ℕ
+_≥′_ = flip _≤′_
+
 _<′_ : Relation 0 ℕ
 m <′ n = succ m ≤′ n
+
+_>′_ : Relation 0 ℕ
+_>′_ = flip _<′_
 
 <′-wf : WellFounded _<′_
 <′-wf = acc ∘ aux where
@@ -87,5 +96,5 @@ zero≤′ zero     = refl
 zero≤′ (succ n) = succ (zero≤′ n)
 
 succ≤′succ : ∀ {m n} → m ≤′ n → succ m ≤′ succ n
-succ≤′succ refl       = refl
+succ≤′succ refl        = refl
 succ≤′succ (succ m≤′n) = succ (succ≤′succ m≤′n)

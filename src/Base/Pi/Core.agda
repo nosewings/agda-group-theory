@@ -34,25 +34,8 @@ f $ x = f x
 id : ∀ {ℓ} {A : Type ℓ} → (A → A)
 id = λ x → x
 
-_⨾_ :
-  ∀ {ℓ₁ ℓ₂ ℓ₃}
-    {A : Type ℓ₁}
-    {B : A → Type ℓ₂}
-    {C : (x : A) → B x → Type ℓ₃}
-  → (f : Π A B)
-  → ({x : A} → Π (B x) (C x))
-  → ((x : A) → C x (f x))
-f ⨾ g = λ x → g (f x)
-
 const : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → A → (B → A)
 const x = λ _ → x
-
-flip :
-  ∀ {ℓ₁ ℓ₂ ℓ₃}
-    {A : Type ℓ₁} {B : Type ℓ₂} {C : A → B → Type ℓ₃}
-  → ((x : A) (y : B) → C x y)
-  → ((y : B) (x : A) → C x y)
-flip f = λ y x → f x y
 
 _∘_ :
   ∀ {ℓ₁ ℓ₂ ℓ₃}
@@ -62,7 +45,14 @@ _∘_ :
   → ({x : A} → Π (B x) (C x))
   → (f : Π A B)
   → ((x : A) → C x (f x))
-_∘_ = flip _⨾_
+g ∘ f = λ x → g (f x)
+
+flip :
+  ∀ {ℓ₁ ℓ₂ ℓ₃}
+    {A : Type ℓ₁} {B : Type ℓ₂} {C : A → B → Type ℓ₃}
+  → ((x : A) (y : B) → C x y)
+  → ((y : B) (x : A) → C x y)
+flip f = λ y x → f x y
 
 _⟨_⟩_ :
   ∀ {ℓ₁ ℓ₂ ℓ₃}
@@ -93,5 +83,5 @@ annotate : ∀ {ℓ} (A : Type ℓ) → A → A
 annotate _ x = x
 syntax annotate A x = x ∶ A
 
-! : ∀ {ℓ} {A : Type ℓ} → ⦃ _ : A ⦄ → A
-! ⦃ x ⦄ = x
+!!! : ∀ {ℓ} {A : Type ℓ} → ⦃ _ : A ⦄ → A
+!!! ⦃ x ⦄ = x

@@ -4,9 +4,9 @@ open import Base.Level
 open import Base.Type
 open import Base.Sigma.Core
 open import Base.Relation
-open import Base.Equality
   hiding ( refl
          )
+open import Base.Equality
 
 open import Base.Pi.Core
   public

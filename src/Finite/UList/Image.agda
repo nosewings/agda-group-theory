@@ -62,4 +62,4 @@ module _
     Finite:InjectiveImage = Finite.intro Image-elements
 
   Image-size : size-of (Image f) ≡ size-of A
-  Image-size = UList.map-length (to-Image f) _ (elements-of A)
+  Image-size = UList.length-map (to-Image f) _ (elements-of A)

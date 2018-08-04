@@ -5,6 +5,7 @@ open import Base.Type
 open import Base.Pi
 open import Base.Maybe
   hiding ( Any
+         ; All
          )
 open import Base.Equality
 open import Base.Nat
@@ -36,7 +37,7 @@ open UList⁺ public
 
 from-UList : ∀ {ℓ} {A : Type ℓ} → UList A → Maybe (UList⁺ A)
 from-UList []                = none
-from-UList (x ∷ xs and x∉xs) = just (x ∷ xs and x∉xs)
+from-UList (x ∷ xs and x∉xs) = some (x ∷ xs and x∉xs)
 
 to-UList : ∀ {ℓ} {A : Type ℓ} → UList⁺ A → UList A
 to-UList (x ∷ xs and x∉xs) = x ∷ xs and x∉xs

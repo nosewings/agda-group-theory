@@ -1,6 +1,10 @@
 module Finite.Relationships where
 
 open import Base.Type
+open import Base.Type.LogicalEquivalence
+  hiding ( sym
+         ; trans
+         )
 open import Base.Type.Equivalence
   as ≅
   hiding ( id
@@ -32,7 +36,7 @@ UVecSize⇒EquivalenceSize :
     {A : Type ℓ}
   → UVec.Size A n
   → Equivalence.Size A n
-UVecSize⇒EquivalenceSize {n = n} {A} (UVec.Size.intro xs ⦃ ϕ ⦄) = Equivalence.Size.intro (_≅_.intro f g (_⇄_.intro η ε)) where
+UVecSize⇒EquivalenceSize {n = n} {A} (UVec.Size.intro xs ⦃ ϕ ⦄) = Equivalence.Size.intro (_≅_.intro (_↔_.intro f g) (_⇄_.intro η ε)) where
   f : A → Fin n
   f = proj₁ ∘ ∈⇒index ∘ UVec.Enumeration.locate ϕ
   g : Fin n → A
@@ -51,7 +55,7 @@ EquivalenceSize⇒UVecSize :
     {A : Type ℓ}
   → Equivalence.Size A n
   → UVec.Size A n
-EquivalenceSize⇒UVecSize {n = n} {A} (Equivalence.Size.intro ϕ@(_≅_.intro f g (_⇄_.intro η ε))) =
+EquivalenceSize⇒UVecSize {n = n} {A} (Equivalence.Size.intro ϕ@(_≅_.intro (_↔_.intro f g) (_⇄_.intro η ε))) =
     UVec.Size.intro elems ⦃ Enumeration.intro lemma ⦄ where
   elems : UVec A n
   elems = UVec.map g (from-inj ϕ) (UVec.fins n)

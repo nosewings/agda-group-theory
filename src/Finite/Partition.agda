@@ -42,17 +42,17 @@ module _
         ≡⟨⟩
       L.sum (L.map (UL⁺.length ∘ elements) (classes p))
         ≡⟨⟩
-      L.fold _+_ 0 (L.map (UL⁺.length ∘ elements) (classes p))
-        ≡⟨ L.fold-map (UL⁺.length ∘ elements) _+_ 0 (classes p) ⟩
-      L.fold (λ c n → UL⁺.length (elements c) + n) 0 (classes p)
+      L.foldr _+_ 0 (L.map (UL⁺.length ∘ elements) (classes p))
+        ≡⟨ L.foldr-map _+_ 0 (UL⁺.length ∘ elements) (classes p) ⟩
+      L.foldr (λ c n → UL⁺.length (elements c) + n) 0 (classes p)
         ≡⟨⟩
-      L.fold (λ c n → M.rec 0 (UL⁺.length ∘ elements) (just c) + n) 0 (classes p)
+      L.foldr (λ c n → M.rec 0 (UL⁺.length ∘ elements) (some c) + n) 0 (classes p)
         ≡⟨⟩
-      L.fold (λ c n → Pseudo.class-length (just c) + n) 0 (classes p)
-        ≡⟨ L.fold-map (Pseudo.class-length ∘ just) _+_ 0 (classes p) ⟩⁻¹
-      L.fold _+_ 0 (L.map (Pseudo.class-length ∘ just) (classes p))
-        ≡⟨ L.map-∘ Pseudo.class-length just (classes p) |in-context L.fold _+_ 0 ⟩
-      L.fold _+_ 0 (L.map Pseudo.class-length (L.map just (classes p)))
+      L.foldr (λ c n → Pseudo.class-length (some c) + n) 0 (classes p)
+        ≡⟨ L.foldr-map _+_ 0 (Pseudo.class-length ∘ some) (classes p) ⟩⁻¹
+      L.foldr _+_ 0 (L.map (Pseudo.class-length ∘ some) (classes p))
+        ≡⟨ L.map-∘ Pseudo.class-length some (classes p) |in-context L.foldr _+_ 0 ⟩
+      L.foldr _+_ 0 (L.map Pseudo.class-length (L.map some (classes p)))
         ≡⟨⟩
       Pseudo.total-length (Pseudo.from-RelativePartition p)
         ∎

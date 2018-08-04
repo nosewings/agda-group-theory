@@ -94,10 +94,10 @@ module LeftCosets
     Equivalence:~ᴸ = Equivalence.intro
 
     -- It is a mere proposition whether elements are in the same left
-    -- coset. That is, for any two elements x,y:G, any two proofs that x~ᴸy are
-    -- themselves equal. This is due to the injectivity of composition with one
-    -- element fixed and the injectivity of ϕ, as well as the fact that we have
-    -- axiom K enabled.
+    -- coset. That is, for any two elements x,y:G and any two proofs ϕ,ψ:x~ᴸy,
+    -- we have ϕ=ψ. This is something of a happy accident -- it is only true
+    -- because composition in a group is an injection (and because we have axiom
+    -- K enabled).
     Prop:~ᴸ : ∀ {x y} → Prop (x ~ᴸ y)
     Prop:~ᴸ = Prop.intro (λ{ (_ , γ) (_ , η) → Σ≡-intro-prop _ _ (aux γ η) }) where
       abstract
@@ -105,9 +105,9 @@ module LeftCosets
                → x · ϕ h₁ ≡ y
                → x · ϕ h₂ ≡ y
                → h₁ ≡ h₂
-        aux {x} {y} γ η = let ε = γ ⟨ trans ⟩ sym η
-                              τ = left-cancel x ε
-                          in Monomorphism.injective ! τ
+        aux {x} γ η = let ε = γ ⟨ trans ⟩ sym η
+                          τ = left-cancel x ε
+                      in Monomorphism.injective !!! τ
 
   ~ᴸ-map : ∀ g → Image ϕ → Σ G (g ~ᴸ_)
   ~ᴸ-map g (x , h , ϕ[h]≡x) = g · x , h , cong (g ·_) ϕ[h]≡x
@@ -148,7 +148,7 @@ module _ {ℓ₁ ℓ₂}
 
     instance
       Finite-Image[ϕ] : Finite (Image ϕ)
-      Finite-Image[ϕ] = Finite:InjectiveImage ϕ (Monomorphism.injective !)
+      Finite-Image[ϕ] = Finite:InjectiveImage ϕ (Monomorphism.injective !!!)
 
     -- Every equivalence class of ~ᴸ has the same size as H.
     abstract
@@ -182,11 +182,11 @@ module _ {ℓ₁ ℓ₂}
               ≡⟨ List.map-≐ ~ᴸ-class-size (classes ~ᴸ-partition) |in-context List.sum ⟩
             List.sum (List.map (const (size-of H)) (classes ~ᴸ-partition))
               ≡⟨⟩
-            List.fold _+_ zero (List.map (const (size-of H)) (classes ~ᴸ-partition))
-              ≡⟨ List.fold-map (const (size-of H)) _+_ zero (classes ~ᴸ-partition) ⟩
-            List.fold (λ _ n → size-of H + n) zero (classes ~ᴸ-partition)
-              ≡⟨ List.fold-ℕ-fold (size-of H +_) zero (classes ~ᴸ-partition) ⟩
-            ℕ.fold (size-of H +_) zero (List.length (classes ~ᴸ-partition))
-              ≡⟨ ℕ.*-fold (List.length (classes ~ᴸ-partition)) (size-of H) ⟩⁻¹
+            List.foldr _+_ zero (List.map (const (size-of H)) (classes ~ᴸ-partition))
+              ≡⟨ List.foldr-map _+_ zero (const (size-of H)) (classes ~ᴸ-partition) ⟩
+            List.foldr (λ _ n → size-of H + n) zero (classes ~ᴸ-partition)
+              ≡⟨ List.foldr-const-is-ℕ-foldr (size-of H +_) zero (classes ~ᴸ-partition) ⟩
+            ℕ.foldr (size-of H +_) zero (List.length (classes ~ᴸ-partition))
+              ≡⟨ ℕ.*-is-foldr (List.length (classes ~ᴸ-partition)) (size-of H) ⟩⁻¹
             List.length (classes ~ᴸ-partition) * size-of H
               ∎

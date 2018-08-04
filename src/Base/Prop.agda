@@ -1,6 +1,10 @@
 module Base.Prop where
 
 open import Base.Type
+open import Base.Type.LogicalEquivalence
+  hiding ( refl
+         ; sym
+         )
 open import Base.Type.Equivalence
   hiding ( refl
          ; sym
@@ -29,7 +33,7 @@ Symmetric-Prop-≅ :
     {A : Type ℓ₁}
     (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Symmetric _~_ ⦄
   → ∀ x y → (x ~ y) ≅ (y ~ x)
-Symmetric-Prop-≅ _~_ x y = _≅_.intro sym sym (_⇄_.intro (λ _ → prop _ _) λ _ → prop _ _)
+Symmetric-Prop-≅ _~_ x y = _≅_.intro (_↔_.intro sym sym) (_⇄_.intro (λ _ → prop _ _) λ _ → prop _ _)
 
 Σ≡-intro-prop :
   ∀ {ℓ₁ ℓ₂}

@@ -19,6 +19,8 @@ open import Base.Relation
          )
 open import Base.Equality
 open import Base.Decide
+  hiding ( map
+         )
 open import Base.Nat
   using ( ℕ
         ; zero
@@ -40,6 +42,13 @@ data All P where
   [] : All P []
   _∷_ : ∀ {x xs x∉xs} → P x → All P xs → All P (x ∷ xs and x∉xs)
 
+data Any {ℓ₁ ℓ₂} {A : Type ℓ₁} (P : A → Type ℓ₂) : UList A → Type (ℓ₁ ⊔ ℓ₂) where
+  here  : ∀ {x xs x∉xs} → P x      → Any P (x ∷ xs and x∉xs)
+  there : ∀ {x xs x∉xs} → Any P xs → Any P (x ∷ xs and x∉xs)
+
+_∈_ : ∀ {ℓ} {A : Type ℓ} → A → UList A → Type ℓ
+x ∈ xs = Any (_≡ x) xs
+
 fold : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → (A → B → B) → B → UList A → B
 fold _·_ e []             = e
 fold _·_ e (x ∷ xs and _) = x · fold _·_ e xs
@@ -47,12 +56,24 @@ fold _·_ e (x ∷ xs and _) = x · fold _·_ e xs
 length : ∀ {ℓ} {A : Type ℓ} → UList A → ℕ
 length = fold (const succ) zero
 
-data Any {ℓ₁ ℓ₂} {A : Type ℓ₁} (P : A → Type ℓ₂) : UList A → Type (ℓ₁ ⊔ ℓ₂) where
-  here  : ∀ {x xs x∉xs} → P x      → Any P (x ∷ xs and x∉xs)
-  there : ∀ {x xs x∉xs} → Any P xs → Any P (x ∷ xs and x∉xs)
+module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} where
 
-_∈_ : ∀ {ℓ} {A : Type ℓ} → A → UList A → Type ℓ
-x ∈ xs = Any (_≡ x) xs
+  map : (f : A → B) → Injective f → UList A → UList B
+  map-∉ : (f : A → B) (inj : Injective f) {x : A} {xs : UList A} → x ∉ xs → f x ∉ map f inj xs
+
+  map f inj []                = []
+  map f inj (x ∷ xs and x∉xs) = f x ∷ map f inj xs and map-∉ f inj x∉xs
+
+  map-∉ f inj {x} []           = []
+  map-∉ f inj {x} (y≢x ∷ x∉xs) = contramap inj y≢x ∷ map-∉ f inj x∉xs
+
+  length-map : (f : A → B) (inj : Injective f) (xs : UList A) → length (map f inj xs) ≡ length xs
+  length-map f inj []             = refl
+  length-map f inj (x ∷ xs and _) = cong succ (length-map f inj xs)
+
+  ∈-map : (f : A → B) (inj : Injective f) {x : A} {xs : UList A} → x ∈ xs → f x ∈ map f inj xs
+  ∈-map f inj (here  refl) = here refl
+  ∈-map f inj (there x∈xs) = there (∈-map f inj x∈xs)
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
 
@@ -84,22 +105,3 @@ module _ {ℓ} {A : Type ℓ} where
 
   ¬∈⇒∉ : {x : A} {xs : UList A} → ¬ (x ∈ xs) → x ∉ xs
   ¬∈⇒∉ = ¬Any⇒All¬
-
-module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} where
-
-  map : (f : A → B) → Injective f → UList A → UList B
-  map-∉ : (f : A → B) (inj : Injective f) {x : A} {xs : UList A} → x ∉ xs → f x ∉ map f inj xs
-
-  map f inj []                = []
-  map f inj (x ∷ xs and x∉xs) = f x ∷ map f inj xs and map-∉ f inj x∉xs
-
-  map-∉ f inj {x} []           = []
-  map-∉ f inj {x} (y≢x ∷ x∉xs) = contramap inj y≢x ∷ map-∉ f inj x∉xs
-
-  ∈-map : (f : A → B) (inj : Injective f) {x : A} {xs : UList A} → x ∈ xs → f x ∈ map f inj xs
-  ∈-map f inj (here  refl) = here refl
-  ∈-map f inj (there x∈xs) = there (∈-map f inj x∈xs)
-
-  map-length : (f : A → B) (inj : Injective f) (xs : UList A) → length (map f inj xs) ≡ length xs
-  map-length f inj []             = refl
-  map-length f inj (x ∷ xs and _) = cong succ (map-length f inj xs)

@@ -30,31 +30,14 @@ rec :
   → (A ⊎ B → P)
 rec = ind _
 
-bimap :
+map :
   ∀ {ℓ₁ ℓ₂ ℓ₃ ℓ₄}
     {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄}
   → (A → C)
   → (B → D)
   → A ⊎ B
   → C ⊎ D
-bimap f g (inₗ a) = inₗ (f a)
-bimap f g (inᵣ b) = inᵣ (g b)
-
-lmap :
-  ∀ {ℓ₁ ℓ₂ ℓ₃}
-    {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃}
-  → (A → C)
-  → A ⊎ B
-  → C ⊎ B
-lmap f = bimap f id
-
-rmap :
-  ∀ {ℓ₁ ℓ₂ ℓ₃}
-    {A : Type ℓ₁} {B : Type ℓ₂} {D : Type ℓ₃}
-  → (B → D)
-  → A ⊎ B
-  → A ⊎ D
-rmap g = bimap id g
+map f g = rec (inₗ ∘ f) (inᵣ ∘ g)
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} where
 

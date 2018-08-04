@@ -14,7 +14,7 @@ open import Base.Relation
          )
 open import Base.Equality
 open import Base.Nat
-  hiding ( fold
+  hiding ( foldr
          )
 open import Base.Fin
   as Fin
@@ -51,9 +51,9 @@ data Any {ℓ₁ ℓ₂} {A : Type ℓ₁} (P : A → Type ℓ₂) : ∀ {n} →
 _∈_ : ∀ {ℓ} {A : Type ℓ} → A → ∀ {n} → UVec A n → Type ℓ
 x ∈ xs = Any (_≡ x) xs
 
-fold : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → (A → B → B) → B → ∀ {n} → UVec A n → B
-fold _·_ e []             = e
-fold _·_ e (x ∷ xs and _) = x · fold _·_ e xs
+foldr : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → (A → B → B) → B → ∀ {n} → UVec A n → B
+foldr _·_ e []             = e
+foldr _·_ e (x ∷ xs and _) = x · foldr _·_ e xs
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
 
@@ -86,7 +86,7 @@ module _ {ℓ} {A : Type ℓ} where
 module _ {ℓ} {A : Type ℓ} where
 
   length : ∀ {n} → UVec A n → ℕ
-  length = fold (const succ) zero
+  length = foldr (const succ) zero
 
   index : ∀ {n} → UVec A n → Fin n → A
   index (x ∷ xs and _) zero     = x

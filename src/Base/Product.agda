@@ -57,24 +57,8 @@ rec = ind _
   → (proj₁ u ≡ proj₁ v × proj₂ u ≡ proj₂ v)
 ×≡-elim _ _ refl = refl , refl
 
-bimap :
+map :
   ∀ {ℓ₁ ℓ₂ ℓ₃ ℓ₄}
     {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄}
-  → (A → C)
-  → (B → D)
-  → A × B → C × D
-bimap f g (a , b) = f a , g b
-
-lmap :
-  ∀ {ℓ₁ ℓ₂ ℓ₃}
-    {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃}
-  → (A → C)
-  → A × B → C × B
-lmap f = bimap f id
-
-rmap :
-  ∀ {ℓ₁ ℓ₂ ℓ₃}
-    {A : Type ℓ₁} {B : Type ℓ₂} {D : Type ℓ₃}
-  → (B → D)
-  → A × B → A × D
-rmap g = bimap id g
+  → (A → C) → (B → D) → A × B → C × D
+map f g (a , b) = f a , g b

@@ -2,44 +2,29 @@ module Base.List.All where
 
 open import Base.Level
 open import Base.Type
+open import Base.Type.Negation
+  as ¬
 open import Base.Pi
 open import Base.Equality
   hiding ( ind
          ; rec
          )
-
-open import Base.List.Core
-  as List
-  hiding ( ind
-         ; rec
-         ; map
+open import Base.Decide
+  as Decide
+  hiding ( map
          )
 
 open import Base.List.Core
-  public
-  using ( All
-        ; []
-        ; _∷_
-        )
+open import Base.List.Any
+  hiding ( head
+         ; tail
+         ; hmap
+         ; map-over-map
+         )
 
-ind :
-  ∀ {ℓ₁ ℓ₂ ℓ₃}
-    {A : Type ℓ₁} {B : A → Type ℓ₂}
-    (P : ∀ xs → All B xs → Type ℓ₃)
-  → P [] []
-  → (∀ x xs Bx Bxs → P xs Bxs → P (x ∷ xs) (Bx ∷ Bxs))
-  → ∀ xs → Π (All B xs) (P xs)
-ind P n c _ []        = n
-ind P n c _ (Bx ∷ Bs) = c _ _ Bx Bs (ind P n c _ Bs)
-
-rec :
-  ∀ {ℓ₁ ℓ₂ ℓ₃}
-    {A : Type ℓ₁} {B : A → Type ℓ₂}
-    {P : List A → Type ℓ₃}
-  → P []
-  → (∀ x xs → B x → All B xs → P xs → P (x ∷ xs))
-  → ∀ xs → (All B xs → P xs)
-rec = ind _
+data All {ℓ₁ ℓ₂} {A : Type ℓ₁} (P : A → Type ℓ₂) : List A → Type (ℓ₁ ⊔ ℓ₂) where
+  []  : All P []
+  _∷_ : ∀ {x xs} → P x → All P xs → All P (x ∷ xs)
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
 
@@ -53,37 +38,45 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
   apply (Px ∷ Pxs) (here  refl) = Px
   apply (Py ∷ Pxs) (there x∈xs) = apply Pxs x∈xs
 
-map :
+hmap :
   ∀ {ℓ₁ ℓ₂ ℓ₃}
     {A : Type ℓ₁} {P : A → Type ℓ₂} {Q : A → Type ℓ₃}
-  → (∀ x → P x → Q x) →
-  ∀ {xs} → All P xs → All Q xs
-map f []         = []
-map f (Px ∷ Pxs) = f _ Px ∷ map f Pxs
+  → (∀ {x} → P x → Q x)
+  → {xs : List A}
+  → All P xs
+  → All Q xs
+hmap f []         = []
+hmap f (Px ∷ Pxs) = f Px ∷ hmap f Pxs
+
+module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
+
+  all? : (∀ x → Decide (P x)) → ∀ xs → Decide (All P xs)
+  all? ϕ []       = yes []
+  all? ϕ (x ∷ xs) with ϕ x
+  ... | no  ¬Px = no (¬.contramap head ¬Px)
+  ... | yes  Px = Decide.map (Px ∷_) tail (all? ϕ xs)
+
+  instance
+    Decide:All : ⦃ _ : ∀ {x} → Decide (P x) ⦄ → ∀ {xs} → Decide (All P xs)
+    Decide:All = all? !!! _
 
 map-compat :
   ∀ {ℓ₁ ℓ₂ ℓ₃}
     {A : Type ℓ₁} {B : Type ℓ₂} {P : B → Type ℓ₃}
     {f : A → B}
-    {xs : List A}
   → (∀ x → P (f x))
-  → All P (List.map f xs)
-map-compat {xs = []}     ϕ = []
-map-compat {xs = x ∷ xs} ϕ = ϕ x ∷ map-compat ϕ 
+  → (xs : List A)
+  → All P (map f xs)
+map-compat ϕ []       = []
+map-compat ϕ (x ∷ xs) = ϕ x ∷ map-compat ϕ xs
 
-map-over :
+map-over-map :
   ∀ {ℓ₁ ℓ₂ ℓ₃ ℓ₄}
     {A : Type ℓ₁} {B : Type ℓ₂} {P : A → Type ℓ₃} {Q : B → Type ℓ₄}
     {f : A → B}
-  → (∀ x → P x → Q (f x))
+  → (∀ {x} → P x → Q (f x))
   → {xs : List A}
-  → All P xs → All Q (List.map f xs)
-map-over P⇒Qf []          = []
-map-over P⇒Qf (Px ∷ ∀xsP) = P⇒Qf _ Px ∷ map-over P⇒Qf ∀xsP
-
-≡[]-inv :
-  ∀ {ℓ₁ ℓ₂}
-    {A : Type ℓ₁} {P : A → Type ℓ₂}
-    (ϕ : All P [])
-  → ϕ ≡ []
-≡[]-inv [] = refl
+  → All P xs
+  → All Q (map f xs)
+map-over-map ϕ []          = []
+map-over-map ϕ (Px ∷ ∀xsP) = ϕ Px ∷ map-over-map ϕ ∀xsP

@@ -56,22 +56,22 @@ private
       → ((x : B a₁) → P x → g x ≡ g (f x))
       → {xs : List (B a₁)}
       → L∀.All P xs
-      → L.fold _·_ e (L.map g xs) ≡ L.fold _·_ e (L.map (g ∘ f) xs)
+      → L.foldr _·_ e (L.map g xs) ≡ L.foldr _·_ e (L.map (g ∘ f) xs)
     stupid-lemma-lemma B P _·_ e f g ϕ []                   = refl
     stupid-lemma-lemma B P _·_ e f g ϕ {x ∷ xs} (Px ∷ ∀xsP) =
-        L.fold _·_ e (L.map g (x ∷ xs))
+        L.foldr _·_ e (L.map g (x ∷ xs))
           ≡⟨⟩
-        L.fold _·_ e (g x ∷ L.map g xs)
+        L.foldr _·_ e (g x ∷ L.map g xs)
           ≡⟨⟩
-        g x · L.fold _·_ e (L.map g xs)
-          ≡⟨ ϕ x Px |in-context (_· L.fold _·_ e (L.map g xs)) ⟩
-        g (f x) · L.fold _·_ e (L.map g xs)
+        g x · L.foldr _·_ e (L.map g xs)
+          ≡⟨ ϕ x Px |in-context (_· L.foldr _·_ e (L.map g xs)) ⟩
+        g (f x) · L.foldr _·_ e (L.map g xs)
           ≡⟨ stupid-lemma-lemma B P _·_ e f g ϕ ∀xsP |in-context (g (f x) ·_) ⟩
-        g (f x) · L.fold _·_ e (L.map (g ∘ f) xs)
+        g (f x) · L.foldr _·_ e (L.map (g ∘ f) xs)
           ≡⟨⟩
-        L.fold _·_ e (g (f x) ∷ L.map (g ∘ f) xs)
+        L.foldr _·_ e (g (f x) ∷ L.map (g ∘ f) xs)
           ≡⟨⟩
-        L.fold _·_ e (L.map (g ∘ f) (x ∷ xs))
+        L.foldr _·_ e (L.map (g ∘ f) (x ∷ xs))
           ∎
 
     stupid-lemma :
@@ -89,44 +89,44 @@ private
       → ((x : B a₁) → ¬ P x → g x ≡     g (f x))
       → {xs : List (B a₁)}
       → L∃!.One P xs
-      → L.fold _·_ e (L.map g xs) ≡ c · L.fold _·_ e (L.map (g ∘ f) xs)
+      → L.foldr _·_ e (L.map g xs) ≡ c · L.foldr _·_ e (L.map (g ∘ f) xs)
     stupid-lemma B P _·_ assoc comm e f g c ϕ ψ (here {x} {xs} Px ∀xs¬P) =
-        L.fold _·_ e (L.map g (x ∷ xs))
+        L.foldr _·_ e (L.map g (x ∷ xs))
           ≡⟨⟩
-        L.fold _·_ e (g x ∷ L.map g xs)
+        L.foldr _·_ e (g x ∷ L.map g xs)
           ≡⟨⟩
-        g x · L.fold _·_ e (L.map g xs)
-          ≡⟨ ϕ x Px |in-context (_· L.fold _·_ e (L.map g xs)) ⟩
-        (c · g (f x)) · L.fold _·_ e (L.map g xs)
+        g x · L.foldr _·_ e (L.map g xs)
+          ≡⟨ ϕ x Px |in-context (_· L.foldr _·_ e (L.map g xs)) ⟩
+        (c · g (f x)) · L.foldr _·_ e (L.map g xs)
           ≡⟨ stupid-lemma-lemma B (¬_ ∘ P) _·_ e f g ψ ∀xs¬P |in-context ((c · g (f x)) ·_) ⟩
-        (c · g (f x)) · L.fold _·_ e (L.map (g ∘ f) xs)
-          ≡⟨ assoc c (g (f x)) (L.fold _·_ e (L.map (g ∘ f) xs)) ⟩
-        c · (g (f x) · L.fold _·_ e (L.map (g ∘ f) xs))
+        (c · g (f x)) · L.foldr _·_ e (L.map (g ∘ f) xs)
+          ≡⟨ assoc c (g (f x)) (L.foldr _·_ e (L.map (g ∘ f) xs)) ⟩
+        c · (g (f x) · L.foldr _·_ e (L.map (g ∘ f) xs))
           ≡⟨⟩
-        c · L.fold _·_ e (g (f x) ∷ L.map (g ∘ f) xs)
+        c · L.foldr _·_ e (g (f x) ∷ L.map (g ∘ f) xs)
           ≡⟨⟩
-        c · L.fold _·_ e (L.map (g ∘ f) (x ∷ xs))
+        c · L.foldr _·_ e (L.map (g ∘ f) (x ∷ xs))
           ∎
     stupid-lemma B P _·_ assoc comm e f g c ϕ ψ (nothere {x} {xs} ¬Px ∃!xsP) =
-        L.fold _·_ e (L.map g (x ∷ xs))
+        L.foldr _·_ e (L.map g (x ∷ xs))
           ≡⟨⟩
-        L.fold _·_ e (g x ∷ L.map g xs)
+        L.foldr _·_ e (g x ∷ L.map g xs)
           ≡⟨⟩
-        g x · L.fold _·_ e (L.map g xs)
-          ≡⟨ ψ x ¬Px |in-context (_· L.fold _·_ e (L.map g xs)) ⟩
-        g (f x) · L.fold _·_ e (L.map g xs)
+        g x · L.foldr _·_ e (L.map g xs)
+          ≡⟨ ψ x ¬Px |in-context (_· L.foldr _·_ e (L.map g xs)) ⟩
+        g (f x) · L.foldr _·_ e (L.map g xs)
           ≡⟨ stupid-lemma B P _·_ assoc comm e f g c ϕ ψ ∃!xsP |in-context (g (f x) ·_) ⟩
-        g (f x) · (c · L.fold _·_ e (L.map (g ∘ f) xs))
-          ≡⟨ assoc (g (f x)) c (L.fold _·_ e (L.map (g ∘ f) xs)) ⟩⁻¹
-        (g (f x) · c) · L.fold _·_ e (L.map (g ∘ f) xs)
-          ≡⟨ comm (g (f x)) c |in-context (_· L.fold _·_ e (L.map (g ∘ f) xs)) ⟩
-        (c · g (f x)) · L.fold _·_ e (L.map (g ∘ f) xs)
-          ≡⟨ assoc c (g (f x)) (L.fold _·_ e (L.map (g ∘ f) xs)) ⟩
-        c · (g (f x) · L.fold _·_ e (L.map (g ∘ f) xs))
+        g (f x) · (c · L.foldr _·_ e (L.map (g ∘ f) xs))
+          ≡⟨ assoc (g (f x)) c (L.foldr _·_ e (L.map (g ∘ f) xs)) ⟩⁻¹
+        (g (f x) · c) · L.foldr _·_ e (L.map (g ∘ f) xs)
+          ≡⟨ comm (g (f x)) c |in-context (_· L.foldr _·_ e (L.map (g ∘ f) xs)) ⟩
+        (c · g (f x)) · L.foldr _·_ e (L.map (g ∘ f) xs)
+          ≡⟨ assoc c (g (f x)) (L.foldr _·_ e (L.map (g ∘ f) xs)) ⟩
+        c · (g (f x) · L.foldr _·_ e (L.map (g ∘ f) xs))
           ≡⟨⟩
-        c · L.fold _·_ e (g (f x) ∷ L.map (g ∘ f) xs)
+        c · L.foldr _·_ e (g (f x) ∷ L.map (g ∘ f) xs)
           ≡⟨⟩
-        c · (L.fold _·_ e (L.map (g ∘ f) (x ∷ xs)))
+        c · (L.foldr _·_ e (L.map (g ∘ f) (x ∷ xs)))
           ∎
 
 module _
@@ -166,8 +166,9 @@ module _
 
   -- Injection.
   from-RelativePartition : ∀ {xs} → RelativePartition A _~_ xs → PseudoRelativePartition A _~_ xs
-  classes          (from-RelativePartition p) = L.map just (classes p)
-  classes-complete (from-RelativePartition p) = UL∀.map (λ x → L∃!.map-over (λ _ → here) λ{ _ (here x~head) → x~head }) (classes-complete p)
+  classes          (from-RelativePartition p) = L.map some (classes p)
+  classes-complete (from-RelativePartition p) =
+      UL∀.map (λ x → L∃!.map-over-map here λ{ (here x~head) → x~head }) (classes-complete p)
 
   -- The total length of a pseudo-partition, defined as the sum of the lengths
   -- of its equivalence classes, where an empty equivalence class has length
@@ -180,7 +181,7 @@ module _
 
     class-[]-inv : (x : PseudoRelativeEquivalenceClass A _~_ []) → x ≡ none
     class-[]-inv none = refl
-    class-[]-inv (just c) with elements-sublist c
+    class-[]-inv (some c) with elements-sublist c
     ... | ()
 
     []-total-length : (p : PseudoRelativePartition A _~_ []) → total-length p ≡ 0
@@ -191,14 +192,14 @@ module _
           ≡⟨ L.map-≐ (λ m → cong class-length (class-[]-inv m)) (classes p) |in-context L.sum ⟩
         L.sum (L.map (const 0) (classes p))
           ≡⟨⟩
-        L.fold _+_ 0 (L.map (const 0) (classes p))
-          ≡⟨ L.fold-map (const 0) _+_ 0 (classes p) ⟩
-        L.fold (λ _ n → 0 + n) 0 (classes p)
+        L.foldr _+_ 0 (L.map (const 0) (classes p))
+          ≡⟨ L.foldr-map _+_ 0 (const 0) (classes p) ⟩
+        L.foldr (λ _ n → 0 + n) 0 (classes p)
           ≡⟨⟩
-        L.fold (λ _ n → n) 0 (classes p)
-          ≡⟨ L.fold-ℕ-fold id 0 (classes p) ⟩
-        ℕ.fold id 0 (L.length (classes p))
-          ≡⟨ ℕ.fold-id 0 (L.length (classes p)) ⟩
+        L.foldr (λ _ n → n) 0 (classes p)
+          ≡⟨ L.foldr-const-is-ℕ-foldr id 0 (classes p) ⟩
+        ℕ.foldr id 0 (L.length (classes p))
+          ≡⟨ ℕ.foldr-id 0 (L.length (classes p)) ⟩
         0
           ∎
 
@@ -211,20 +212,20 @@ module _
   narrow-class {x} {xs} {x∉xs} = M.bind aux where
     aux : RelativeEquivalenceClass A _~_ (x ∷ xs and x∉xs) → Maybe (RelativeEquivalenceClass A _~_ xs)
     aux c with elements c | elements-sublist c | elements-related c | elements-complete c
-    ... | e ∷ es and e∉es | _ ∺ [e∷es]≼xs | ∀es[~e] | _ ∷ complete-tail = just $ record
+    ... | e ∷ es and e∉es | _ ∺ [e∷es]≼xs | ∀es[~e] | _ ∷ complete-tail = Maybe.some $ record
         { elements          = e ∷ es and e∉es
         ; elements-sublist  = [e∷es]≼xs
         ; elements-related  = ∀es[~e]
         ; elements-complete = complete-tail
         }
     ... | _ ∷ [] and _ | _ ∷ _ | _ | _ = none
-    ... | _ ∷ (e ∷ es and e∉es) and x∉[e∷es] | _ ∷ [e∷es]≼xs | e~x ∷ ∀es[~x] | _ ∷ complete-tail = just $ record
+    ... | _ ∷ (e ∷ es and e∉es) and x∉[e∷es] | _ ∷ [e∷es]≼xs | e~x ∷ ∀es[~x] | _ ∷ complete-tail = Maybe.some $ record
         { elements          = e ∷ es and e∉es
         ; elements-sublist  = [e∷es]≼xs
         ; elements-related  = UL∀.map (λ _ → flip trans (sym e~x)) ∀es[~x]
         ; elements-complete =
-            UL∀.map-∈ (λ a a∈xs → ⊎.bimap (flip UL∃.tail (¬.contramap (λ x≡a → subst (UL∃._∈ xs) (sym x≡a) a∈xs) (∉⇒¬∈ x∉xs)))
-                                          (¬.contramap (flip trans e~x)))
+            UL∀.map-∈ (λ a a∈xs → ⊎.map (UL∃.tail (¬.contramap (λ x≡a → subst (UL∃._∈ xs) (sym x≡a) a∈xs) (∉⇒¬∈ x∉xs)))
+                                        (¬.contramap (flip trans e~x)))
                       complete-tail
         }
 
@@ -236,14 +237,14 @@ module _
     → PseudoRelativePartition A _~_ xs
   classes          (narrow-partition {x} {xs} {x∉xs} p) = L.map narrow-class (classes p)
   classes-complete (narrow-partition {x} {xs} {x∉xs} p) =
-      UL∀.map-∈ (λ a a∈xs → L∃!.map-over (aux₁ a a∈xs) (aux₂ a a∈xs)) (UL∀.tail (classes-complete p)) where
+      UL∀.map-∈ (λ a a∈xs → L∃!.map-over-map (aux₁ a a∈xs) (aux₂ a a∈xs)) (UL∀.tail (classes-complete p)) where
     aux₁ :
       ∀ a
       → a UL.∈ xs
-      → (c : PseudoRelativeEquivalenceClass A _~_ (x ∷ xs and x∉xs))
+      → {c : PseudoRelativeEquivalenceClass A _~_ (x ∷ xs and x∉xs)}
       → M.Any ((a ~_) ∘ UL⁺.head ∘ elements) c
       → M.Any ((a ~_) ∘ UL⁺.head ∘ elements) (narrow-class c)
-    aux₁ a a∈xs (just c) (here a~head) with elements c | elements-sublist c | elements-related c | elements-complete c
+    aux₁ a a∈xs {some c} (here a~head) with elements c | elements-sublist c | elements-related c | elements-complete c
     ... | _            | _ ∺ _ | _       | _ ∷ _             = here a~head
     ... | _ ∷ [] and _ | _ ∷ _ | _       | _ ∷ complete-tail =
         ⊎.rec (λ{ (here refl) → a∈xs ↯ ∉⇒¬∈ x∉xs ; (there ()) })
@@ -254,15 +255,14 @@ module _
     aux₂ :
       ∀ a
       → a UL.∈ xs
-      → (c : PseudoRelativeEquivalenceClass A _~_ (x ∷ xs and x∉xs))
+      → {c : PseudoRelativeEquivalenceClass A _~_ (x ∷ xs and x∉xs)}
       → M.Any ((a ~_) ∘ UL⁺.head ∘ elements) (narrow-class c)
       → M.Any ((a ~_) ∘ UL⁺.head ∘ elements) c
-    aux₂ a a∈xs none ()
-    aux₂ a a∈xs (just c) ϕ with elements c | elements-sublist c | elements-related c | elements-complete c | inspect elements c
-    aux₂ a a∈xs (just c) (here a~e) | _            | _ ∺ _ | _       | _ ∷ _ | [ refl ] = here a~e
-    aux₂ a a∈xs (just c) ()         | _ ∷ [] and _ | _ ∷ _ | _       | _     | _
-    aux₂ a a∈xs (just c) (here a~e) | _            | _ ∷ _ | e~x ∷ _ | _ ∷ _ | [ refl ] = here (a~e ⟨ trans ⟩ e~x)
-
+    aux₂ a a∈xs {none} ()
+    aux₂ a a∈xs {some c} ϕ with elements c | elements-sublist c | elements-related c | elements-complete c | inspect elements c
+    aux₂ a a∈xs {some c} (here a~e) | _            | _ ∺ _ | _       | _ ∷ _ | [ refl ] = here a~e
+    aux₂ a a∈xs {some c} ()         | _ ∷ [] and _ | _ ∷ _ | _       | _     | _
+    aux₂ a a∈xs {some c} (here a~e) | _            | _ ∷ _ | e~x ∷ _ | _ ∷ _ | [ refl ] = here (a~e ⟨ trans ⟩ e~x)
 
   abstract
 
@@ -273,7 +273,7 @@ module _
     narrow-partition-total-length {x} {xs} {x∉xs} p =
         total-length p
           ≡⟨⟩
-        L.fold _+_ 0 (L.map class-length (classes p))
+        L.foldr _+_ 0 (L.map class-length (classes p))
           ≡⟨ stupid-lemma (PseudoRelativeEquivalenceClass A _~_)
                           (M.Any ((x ~_) ∘ UL⁺.head ∘ elements))
                           _+_
@@ -287,9 +287,9 @@ module _
                           aux₂
                           (UL∀.head (classes-complete p))
            ⟩
-        succ (L.fold _+_ 0 (L.map (class-length ∘ narrow-class) (classes p)))
-          ≡⟨ L.map-∘ class-length narrow-class (classes p) |in-context (succ ∘ L.fold _+_ 0) ⟩
-        succ (L.fold _+_ 0 (L.map class-length (L.map narrow-class (classes p))))
+        succ (L.foldr _+_ 0 (L.map (class-length ∘ narrow-class) (classes p)))
+          ≡⟨ L.map-∘ class-length narrow-class (classes p) |in-context (succ ∘ L.foldr _+_ 0) ⟩
+        succ (L.foldr _+_ 0 (L.map class-length (L.map narrow-class (classes p))))
           ≡⟨⟩
         succ (total-length (narrow-partition p))
           ∎ where
@@ -298,7 +298,7 @@ module _
           (c : PseudoRelativeEquivalenceClass A _~_ (x ∷ xs and x∉xs))
         → M.Any ((x ~_) ∘ UL⁺.head ∘ elements) c
         → class-length c ≡ succ (class-length (narrow-class c))
-      aux₁ (just c) (here α) with elements c | elements-sublist c | elements-related c | elements-complete c
+      aux₁ (some c) (here α) with elements c | elements-sublist c | elements-related c | elements-complete c
       ... | es | _ ∺ ϕ | ψ | β ∷ χ = ⊎.rec (λ ζ → ≼-preserves-∈ ϕ ζ ↯ ∉⇒¬∈ x∉xs) (λ ζ → α ↯ ζ) β
       ... | _ ∷ [] and _ | _ ∷ _ | _ | _ = refl
       ... | x ∷ (e ∷ es and e∉es) and x∉[e∷es] | x ∷ ϕ | e~x ∷ ∀es[~x] | _ ∷ χ = refl
@@ -308,10 +308,10 @@ module _
         → ¬ (M.Any ((x ~_) ∘ UL⁺.head ∘ elements) c)
         → class-length c ≡ class-length (narrow-class c)
       aux₂ none _     = refl
-      aux₂ (just c) α with elements c | elements-sublist c | elements-related c | elements-complete c | inspect elements c
-      aux₂ (just c) α | es | _ ∺ ϕ | ψ | _ ∷ χ | _ = refl
-      aux₂ (just c) α | _ ∷ [] and _ | _ ∷ _ | _ | _ | [ γ ] = here (subst (λ u → x ~ UL⁺.head u) (sym γ) Relation.refl) ↯ α
-      aux₂ (just c) α | x ∷ (e ∷ es and e∉es) and x∉[e∷es] | x ∷ ϕ | e~x ∷ ∀es[~x] | _ ∷ χ | [ γ ] =
+      aux₂ (some c) α with elements c | elements-sublist c | elements-related c | elements-complete c | inspect elements c
+      aux₂ (some c) α | es | _ ∺ ϕ | ψ | _ ∷ χ | _ = refl
+      aux₂ (some c) α | _ ∷ [] and _ | _ ∷ _ | _ | _ | [ γ ] = here (subst (λ u → x ~ UL⁺.head u) (sym γ) Relation.refl) ↯ α
+      aux₂ (some c) α | x ∷ (e ∷ es and e∉es) and x∉[e∷es] | x ∷ ϕ | e~x ∷ ∀es[~x] | _ ∷ χ | [ γ ] =
           here (subst (λ u → x ~ UList⁺.head u) (sym γ) Relation.refl) ↯ α
 
     total-length-is-length : ∀ {xs} (p : PseudoRelativePartition A _~_ xs) → total-length p ≡ UL.length xs

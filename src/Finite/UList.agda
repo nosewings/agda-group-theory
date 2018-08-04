@@ -17,9 +17,6 @@ open import Finite.UList.Any
 
 open import Finite.UList.Core
   public
-  hiding ( All
-         ; Any
-         )
 
 record Enumeration {ℓ} {A : Type ℓ} (xs : UList A) : Type ℓ where
   constructor intro
@@ -29,7 +26,7 @@ open Enumeration ⦃...⦄
   public
 
 locate-in : ∀ {ℓ} {A : Type ℓ} (xs : UList A) ⦃ _ : Enumeration xs ⦄ (x : A) → x ∈ xs
-locate-in _ = Enumeration.locate !
+locate-in _ = Enumeration.locate !!!
 
 record Finite {ℓ} (A : Type ℓ) : Type ℓ where
   constructor intro
@@ -40,7 +37,7 @@ open Finite ⦃...⦄
   public
 
 elements-of : ∀ {ℓ} (A : Type ℓ) → ⦃ _ : Finite A ⦄ → UList A
-elements-of A = Finite.elements !
+elements-of A = Finite.elements !!!
 
 size-of : ∀ {ℓ} (A : Type ℓ) → ⦃ _ : Finite A ⦄ → ℕ
 size-of A ⦃ ϕ ⦄ = length (elements-of A)
@@ -71,7 +68,7 @@ instance
       {A : Type ℓ₁} ⦃ _ : Finite A ⦄
       {P : A → Type ℓ₂} ⦃ _ : ∀ {x} → Decide (P x) ⦄
     → Decide (Σ A P)
-  Finite⇒Decide:Σ {A = A} {P} = Decide.bimap aux₁ aux₂ (decide (Any P (elements-of A))) where
+  Finite⇒Decide:Σ {A = A} {P} = Decide.map aux₁ aux₂ (decide (Any P (elements-of A))) where
 
     aux₁ : Any P (elements-of A) → Σ A P
     aux₁ ∃enumerationP = let (x , _ , Px) = extract ∃enumerationP

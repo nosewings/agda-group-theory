@@ -159,7 +159,7 @@ module _
   abstract
 
     homo-· : (x y : G₁) → ϕ (x · y) ≡ ϕ x · ϕ y
-    homo-· x y = Homomorphism.homo-· ! x y
+    homo-· x y = Homomorphism.homo-· !!! x y
 
     homo-ε : ϕ ε ≡ (ε ∶ G₂)
     homo-ε = idempotent-is-id $

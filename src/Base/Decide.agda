@@ -9,8 +9,10 @@ open import Base.Equality.Core
          ; rec
          )
 
+infix 5 _≟_
+
 data Decide {ℓ} (A : Type ℓ) : Type ℓ where
-  yes : A   → Decide A
+  yes :   A → Decide A
   no  : ¬ A → Decide A
 
 ind :
@@ -32,11 +34,17 @@ rec :
   → (Decide A → P)
 rec = ind _
 
-bimap : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → (A → B) → (B → A) → Decide A → Decide B
-bimap f g = rec (yes ∘ f) (no ∘ ¬.contramap g)
+-- Not sure what to call this. Decide is an exponential functor, with the
+-- morphism mapping given below. By contrast, bind is "almost" a monadic bind,
+-- except it also maps a morphism contravariantly.
+bind : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → (B → A) → (A → Decide B) → (Decide A → Decide B)
+bind f k = rec k (no ∘ ¬.contramap f)
+
+map : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → (A → B) → (B → A) → (Decide A → Decide B)
+map f g = bind g (yes ∘ f)
 
 decide : ∀ {ℓ} (A : Type ℓ) → ⦃ _ : Decide A ⦄ → Decide A
-decide A = !
+decide A = !!!
 
 _≟_ : ∀ {ℓ} {A : Type ℓ} → ⦃ _ : ∀ {x y} → Decide (x ≡ y) ⦄ → (x y : A) → Decide (x ≡ y)
 x ≟ y = decide (x ≡ y)
