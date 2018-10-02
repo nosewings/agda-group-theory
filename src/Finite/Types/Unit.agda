@@ -1,19 +1,19 @@
 module Finite.Types.Unit where
 
+open import Base.Pi
 open import Base.Sigma
 open import Base.Equality
 open import Base.Unit
 
-open import Finite.UVec
+open import Finite.UList
 
-𝟙-UVec : UVec 𝟙 1
-𝟙-UVec = _ ∷ [] and []
+𝟙-UList : UList 𝟙
+𝟙-UList = _ ∷ [] and []
 
-𝟙-UVec-Enumeration : Enumeration 𝟙-UVec
-𝟙-UVec-Enumeration = λ _ → here refl
+instance
 
-𝟙-Size : Size 𝟙 1
-𝟙-Size = 𝟙-UVec , 𝟙-UVec-Enumeration
+  𝟙-UVec-Enumeration : Enumeration 𝟙-UList
+  𝟙-UVec-Enumeration = Enumeration.intro (const (here refl))
 
-𝟙-Finite : Finite 𝟙
-𝟙-Finite = _ , 𝟙-Size
+  𝟙-Finite : Finite 𝟙
+  𝟙-Finite = Finite.intro 𝟙-UList
