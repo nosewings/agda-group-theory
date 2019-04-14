@@ -1,6 +1,6 @@
 > And when Alexander saw the breadth of his domain, he wept, for there were no more worlds to conquer.
 
-The above is a misquotation. The original passage, from Plutarch's /Moralia/, reads:
+The above is a misquotation. The original passage, from Plutarch's *Moralia*, reads:
 
 > Alexander wept when he heard Anaxarchus discourse about an infinite number of worlds, and when his friends inquired what ailed him, "Is it not worthy of tears," he said, "that, when the number of worlds is infinite, we have not yet become lords of a single one?
 
