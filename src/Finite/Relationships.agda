@@ -45,7 +45,7 @@ UVecSize⇒EquivalenceSize {n = n} {A} (intro xs ⦃ ϕ ⦄) = intro (intro (int
     η : id ≐ g ∘ f
     η = sym ∘ proj₂ ∘ ∈⇒index ∘ UVec.Enumeration.locate ϕ
     ε : f ∘ g ≐ id
-    ε = index-inj _ ∘ sym ∘ η ∘ g
+    ε = index-inj xs ∘ sym ∘ η ∘ g
 
 UVecFinite⇒EquivalenceFinite : ∀ {ℓ} {A : Type ℓ} → UVec.Finite A → Equivalence.Finite A
 UVecFinite⇒EquivalenceFinite (intro n ⦃ ϕ ⦄) = intro n ⦃ UVecSize⇒EquivalenceSize ϕ ⦄
