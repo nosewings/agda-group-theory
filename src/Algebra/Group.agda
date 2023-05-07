@@ -181,6 +181,6 @@ record Monomorphism
     (ϕ : G₁ → G₂) : Type (ℓ₁ ⊔ ℓ₂) where
   field
     ⦃ homomorphism ⦄ : Homomorphism ϕ
-    ⦃ injective ⦄    : Injective ϕ
+    injective        : Injective ϕ
 open Monomorphism ⦃...⦄
   public
