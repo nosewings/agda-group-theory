@@ -188,4 +188,4 @@ open Finite ⦃...⦄
 
 instance
   Enumeration:fins : ∀ {n} → Enumeration (fins n)
-  Enumeration:fins = Enumeration.intro fins-∈
+  Enumeration:fins = intro fins-∈

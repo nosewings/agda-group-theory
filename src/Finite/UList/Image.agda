@@ -54,12 +54,12 @@ module _
   instance
 
     Enumeration:InjectiveImage : Enumeration Image-elements
-    Enumeration:InjectiveImage = Enumeration.intro aux where
+    Enumeration:InjectiveImage = intro aux where
       aux : (β : Image f) → β UListAny.∈ Image-elements
       aux (y , x , f[x]≡y) = subst (UListAny._∈ Image-elements) (sym {_~_ = _≡_} (to-Image-stable f[x]≡y)) (∈-map _ _ (locate x))
 
     Finite:InjectiveImage : Finite (Image f)
-    Finite:InjectiveImage = Finite.intro Image-elements
+    Finite:InjectiveImage = intro Image-elements
 
   Image-size : size-of (Image f) ≡ size-of A
   Image-size = UList.length-map (to-Image f) _ (elements-of A)

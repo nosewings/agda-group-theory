@@ -34,13 +34,13 @@ module _ {ℓ} {A : Type ℓ} where
   instance
 
     Reflexive:≈ : Reflexive _≈_
-    Reflexive:≈ = Reflexive.intro (λ _ → ↔.refl)
+    Reflexive:≈ = intro (λ _ → ↔.refl)
 
     Symmetric:≈ : Symmetric _≈_
-    Symmetric:≈ = Symmetric.intro (λ x≈y → λ a → ↔.sym (x≈y a))
+    Symmetric:≈ = intro (λ x≈y → λ a → ↔.sym (x≈y a))
 
     Transitive:≈ : Transitive _≈_
-    Transitive:≈ = Transitive.intro (λ x≈y y≈z → λ a → x≈y a ⟨ ↔.trans ⟩ y≈z a)
+    Transitive:≈ = intro (λ x≈y y≈z → λ a → x≈y a ⟨ ↔.trans ⟩ y≈z a)
 
   ≈[] : ∀ {xs} → xs ≈ [] → xs ≡ []
   ≈[] {[]         } xs≈[] = refl
@@ -51,7 +51,7 @@ module _ {ℓ} {A : Type ℓ} where
   []≈ = ≈[] ∘ sym
 
   tail : ∀ {a xs a∉xs ys a∉ys} → (a ∷ xs and a∉xs) ≈ (a ∷ ys and a∉ys) → xs ≈ ys
-  tail {a} {xs} {a∉xs} {ys} {a∉ys} ϕ = λ b → _↔_.intro (f b) (g b) where
+  tail {a} {xs} {a∉xs} {ys} {a∉ys} ϕ = λ b → intro (f b) (g b) where
 
     f : ∀ b → b ∈ xs → b ∈ ys
     f b b∈xs with _↔_.to (ϕ b) (there b∈xs)
@@ -66,7 +66,7 @@ module _ {ℓ} {A : Type ℓ} where
   ≈delete : ∀ {x xs x∉xs ys} → (ϕ : (x ∷ xs and x∉xs) ≈ ys) → xs ≈ delete (_↔_.to (ϕ x) (here refl))
   ≈delete {x} {xs} {x∉xs} {ys} ϕ with _↔_.to (ϕ x) (here refl)
   ≈delete {x} {xs} {x∉xs} {y ∷ ys and y∉ys} ϕ | here  refl = tail ϕ
-  ≈delete {x} {xs} {x∉xs} {y ∷ ys and y∉ys} ϕ | there x∈ys = λ a → _↔_.intro (f a) (g a)  where
+  ≈delete {x} {xs} {x∉xs} {y ∷ ys and y∉ys} ϕ | there x∈ys = λ a → intro (f a) (g a)  where
 
     f : ∀ a → a ∈ xs → a ∈ (y ∷ delete x∈ys and delete-∉ x∈ys y∉ys)
     f a a∈xs with _↔_.to (ϕ a) (there a∈xs)
@@ -100,4 +100,4 @@ module _ {ℓ} {A : Type ℓ} where
       (xs : UList A) (ϕ : Enumeration xs)
       (ys : UList A) (ψ : Enumeration ys)
     → xs ≈ ys
-  enumerations-are-permutations xs ϕ ys ψ = λ a → _↔_.intro (λ _ → Enumeration.locate ψ a) (λ _ → Enumeration.locate ϕ a)
+  enumerations-are-permutations xs ϕ ys ψ = λ a → intro (λ _ → Enumeration.locate ψ a) (λ _ → Enumeration.locate ϕ a)
