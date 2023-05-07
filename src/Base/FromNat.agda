@@ -26,4 +26,3 @@ instance
     { Constraint = const 𝟙
     ; fromNat    = λ n → n
     }
-  
