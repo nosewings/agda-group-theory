@@ -15,7 +15,7 @@ open import Base.Type.Equivalence.Core
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} where
 
   from-inj-and-surj : {f : A → B} → Injective f → SplitSurjective f → A ≅ B
-  from-inj-and-surj {f} inj surj = _≅_.intro (_↔_.intro f g) (_⇄_.intro η ε) where
+  from-inj-and-surj {f} inj surj = intro (intro f g) (intro η ε) where
 
     g : B → A
     g = proj₁ Π.∘ surj
