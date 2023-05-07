@@ -56,7 +56,7 @@ module LeftCosets
   instance
 
     Reflexive:~ᴸ : Reflexive _~ᴸ_
-    Reflexive:~ᴸ = Reflexive.intro (ε , aux) where
+    Reflexive:~ᴸ = intro (ε , aux) where
       abstract
         aux : ∀ {x} → x · ϕ ε ≡ x
         aux {x} =
@@ -65,7 +65,7 @@ module LeftCosets
           x       ∎
 
     Symmetric:~ᴸ : Symmetric _~ᴸ_
-    Symmetric:~ᴸ = Symmetric.intro λ{ (h , x·ϕ[h]≡y) → h ⁻¹ , aux h x·ϕ[h]≡y } where
+    Symmetric:~ᴸ = intro λ{ (h , x·ϕ[h]≡y) → h ⁻¹ , aux h x·ϕ[h]≡y } where
       abstract
         aux : ∀ {x y} h → x · ϕ h ≡ y → y · ϕ (h ⁻¹) ≡ x
         aux {x} {y} h x·ϕ[h]≡y = right-cancel (ϕ h) $
@@ -77,7 +77,7 @@ module LeftCosets
           x · ϕ h              ∎
 
     Transitive:~ᴸ : Transitive _~ᴸ_
-    Transitive:~ᴸ = Transitive.intro λ{ (h₁ , x·ϕ[h₁]≡y) (h₂ , y·ϕ[h₂]≡z) → (h₁ · h₂) , aux h₁ h₂ x·ϕ[h₁]≡y y·ϕ[h₂]≡z  } where
+    Transitive:~ᴸ = intro λ{ (h₁ , x·ϕ[h₁]≡y) (h₂ , y·ϕ[h₂]≡z) → (h₁ · h₂) , aux h₁ h₂ x·ϕ[h₁]≡y y·ϕ[h₂]≡z  } where
       abstract
         aux : ∀ {x y z} h₁ h₂ → x · ϕ h₁ ≡ y → y · ϕ h₂ ≡ z → x · ϕ (h₁ · h₂) ≡ z
         aux {x} {y} {z} h₁ h₂ x·ϕ[h₁]≡y y·ϕ[h₂]≡z =
@@ -88,10 +88,10 @@ module LeftCosets
           z                 ∎
 
     Preorder:~ᴸ : Preorder _~ᴸ_
-    Preorder:~ᴸ = Preorder.intro
+    Preorder:~ᴸ = intro
 
     Equivalence:~ᴸ : Equivalence _~ᴸ_
-    Equivalence:~ᴸ = Equivalence.intro
+    Equivalence:~ᴸ = intro
 
     -- It is a mere proposition whether elements are in the same left
     -- coset. That is, for any two elements x,y:G and any two proofs ϕ,ψ:x~ᴸy,
@@ -99,7 +99,7 @@ module LeftCosets
     -- because composition in a group is an injection (and because we have axiom
     -- K enabled).
     IsProp:~ᴸ : ∀ {x y} → IsProp (x ~ᴸ y)
-    IsProp:~ᴸ = IsProp.intro (λ{ (_ , γ) (_ , η) → Σ≡-intro-prop _ _ (aux γ η) }) where
+    IsProp:~ᴸ = intro (λ{ (_ , γ) (_ , η) → Σ≡-intro-prop _ _ (aux γ η) }) where
       abstract
         aux : ∀ {x y h₁ h₂}
                → x · ϕ h₁ ≡ y

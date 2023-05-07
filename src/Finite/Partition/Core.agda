@@ -106,7 +106,7 @@ module _
     step : (xs : UList A)
          → ((ys : UList A) → UL.length ys <′ UL.length xs → RelativePartition A _~_ ys)
          → RelativePartition A _~_ xs
-    step []                rec = RelativePartition.intro [] []
+    step []                rec = intro [] []
     step (x ∷ xs and x∉xs) rec = rp′ where
 
       -- Partition xs into two sublists: pass(p) and fail(p). pass(p) is a
@@ -197,7 +197,7 @@ module _
   -- proofs, form an enumeration of the relevant Σ-type. This is only provable
   -- because the relation is required to be propositional.
   elements-with-rel-proofs-Enumeration : ∀ c → Enumeration (elements-with-rel-proofs ⦃ _ ⦄ ⦃ eq ⦄ c)
-  elements-with-rel-proofs-Enumeration c = Enumeration.intro
+  elements-with-rel-proofs-Enumeration c = intro
       λ{ (x , x~head) → let x∈A        = locate-in (elements-of A) x
                             x∈elements = ⊎.left (UL∀.apply (elements-complete c) x∈A) (¬¬.intro x~head)
                         in to-UList-prop-lookup (elements-related-full c) x∈elements x~head
