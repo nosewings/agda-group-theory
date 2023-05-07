@@ -36,7 +36,7 @@ _⁻¹ :
     {f : A → B} {g : B → A}
   → f ⇄ g
   → g ⇄ f
-(_⇄_.intro η ε) ⁻¹ = _⇄_.intro (Relation.sym ε) (Relation.sym η)
+(intro η ε) ⁻¹ = intro (Relation.sym ε) (Relation.sym η)
 
 _∘_ :
   ∀ {ℓ₁ ℓ₂ ℓ₃}
@@ -46,9 +46,9 @@ _∘_ :
   → f₂ ⇄ g₂
   → f₁ ⇄ g₁
   → (f₂ Π.∘ f₁) ⇄ (g₁ Π.∘ g₂)
-_∘_ {f₂ = f₂} {g₂} {f₁} {g₁} (_⇄_.intro η₂ ε₂) (_⇄_.intro η₁ ε₁) =
-    _⇄_.intro (λ a → η₁ a                ⟨ Relation.trans ⟩ cong g₁ (η₂ (f₁ a)))
-              (λ c → cong f₂ (ε₁ (g₂ c)) ⟨ Relation.trans ⟩ ε₂ c               )
+_∘_ {f₂ = f₂} {g₂} {f₁} {g₁} (intro η₂ ε₂) (intro η₁ ε₁) =
+    intro (λ a → η₁ a                ⟨ Relation.trans ⟩ cong g₁ (η₂ (f₁ a)))
+          (λ c → cong f₂ (ε₁ (g₂ c)) ⟨ Relation.trans ⟩ ε₂ c               )
 
 record _≅_ {ℓ₁ ℓ₂} (A : Type ℓ₁) (B : Type ℓ₂) : Type (ℓ₁ ⊔ ℓ₂) where
   constructor intro
@@ -62,19 +62,19 @@ record _≅_ {ℓ₁ ℓ₂} (A : Type ℓ₁) (B : Type ℓ₂) : Type (ℓ₁ 
     public
 
 refl : ∀ {ℓ} {A : Type ℓ} → A ≅ A
-refl = _≅_.intro LogicalEquivalence.refl id
+refl = intro LogicalEquivalence.refl id
 
 sym :
   ∀ {ℓ₁ ℓ₂}
     {A : Type ℓ₁} {B : Type ℓ₂}
   → A ≅ B
   → B ≅ A
-sym (_≅_.intro f↔g f⇄g) = _≅_.intro (LogicalEquivalence.sym f↔g) (f⇄g ⁻¹)
+sym (intro f↔g f⇄g) = intro (LogicalEquivalence.sym f↔g) (f⇄g ⁻¹)
 
 trans :
   ∀ {ℓ₁ ℓ₂ ℓ₃}
     {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃}
   → A ≅ B → B ≅ C → A ≅ C
-trans (_≅_.intro f₁↔g₁ f₁⇄g₁) (_≅_.intro f₂↔g₂ f₂⇄g₂) =
-    _≅_.intro (LogicalEquivalence.trans f₁↔g₁ f₂↔g₂)
-              (f₂⇄g₂ ∘ f₁⇄g₁)
+trans (intro f₁↔g₁ f₁⇄g₁) (intro f₂↔g₂ f₂⇄g₂) =
+    intro (LogicalEquivalence.trans f₁↔g₁ f₂↔g₂)
+          (f₂⇄g₂ ∘ f₁⇄g₁)

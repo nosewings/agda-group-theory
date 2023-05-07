@@ -55,7 +55,7 @@ instance
       {A : Type ℓ₁} {_~_ : Relation ℓ₂ A}
       ⦃ _ : Symmetric _~_ ⦄
     → Symmetric (λ x y → ¬ x ~ y)
-  Symmetric:¬ = Symmetric.intro (contramap sym)
+  Symmetric:¬ = intro (contramap sym)
 
 module PreorderReasoning {ℓ₁ ℓ₂} {A : Type ℓ₁} (_≲_ : Relation ℓ₂ A) ⦃ _ : Preorder _≲_ ⦄ where
 

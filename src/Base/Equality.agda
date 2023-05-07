@@ -16,19 +16,19 @@ module _ {ℓ} {A : Type ℓ} where
   instance
 
     Reflexive:≡ : Reflexive (_≡_ ∶ Relation ℓ A)
-    Reflexive:≡ = Reflexive.intro refl
+    Reflexive:≡ = intro refl
 
     Symmetric:≡ : Symmetric (_≡_ ∶ Relation ℓ A)
-    Symmetric:≡ = Symmetric.intro λ{ refl → refl }
+    Symmetric:≡ = intro λ{ refl → refl }
 
     Transitive:≡ : Transitive (_≡_ ∶ Relation ℓ A)
-    Transitive:≡ = Transitive.intro λ{ refl refl → refl }
+    Transitive:≡ = intro λ{ refl refl → refl }
 
     Preorder:≡ : Preorder (_≡_ ∶ Relation ℓ A)
-    Preorder:≡ = Preorder.intro
+    Preorder:≡ = intro
 
     Equivalence:≡ : Equivalence (_≡_ ∶ Relation ℓ A)
-    Equivalence:≡ = Equivalence.intro
+    Equivalence:≡ = intro
 
 cong :
   ∀ {ℓ₁ ℓ₂}

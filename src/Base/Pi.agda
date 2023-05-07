@@ -21,13 +21,13 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : A → Type ℓ₂} where
   instance
 
     Reflexive:≐ : Reflexive _≐_
-    Reflexive:≐ = Reflexive.intro (λ _ → refl)
+    Reflexive:≐ = intro (λ _ → refl)
 
     Symmetric:≐ : Symmetric _≐_
-    Symmetric:≐ = Symmetric.intro (λ Γ → λ x → sym (Γ x))
+    Symmetric:≐ = intro (λ Γ → λ x → sym (Γ x))
 
     Transitive:≐ : Transitive _≐_
-    Transitive:≐ = Transitive.intro (λ Γ Ε → λ x → trans (Γ x) (Ε x))
+    Transitive:≐ = intro (λ Γ Ε → λ x → trans (Γ x) (Ε x))
 
 Injective : ∀ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} → (A → B) → Type (ℓ₁ ⊔ ℓ₂)
 Injective f = ∀ {x y} → f x ≡ f y → x ≡ y
