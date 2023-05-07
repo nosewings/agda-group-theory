@@ -10,7 +10,7 @@ open import Base.Relation
          )
 open import Base.Equality
   as ≡
-open import Base.Prop
+open import Base.IsProp
 
 open import Finite.UList
   as UList

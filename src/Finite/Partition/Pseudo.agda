@@ -26,7 +26,7 @@ open import Base.Relation
   as Relation
   hiding ( refl
          )
-open import Base.Prop
+open import Base.IsProp
 
 open import Finite.UList
   as UL
@@ -132,7 +132,7 @@ private
 module _
     {ℓ₁ ℓ₂}
     (A : Type ℓ₁)
-    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
+    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
     where
 
   open RelativeEquivalenceClass
@@ -154,7 +154,7 @@ module _
 module _
     {ℓ₁ ℓ₂}
     {A : Type ℓ₁}
-    {_~_ : Relation ℓ₂ A} ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
+    {_~_ : Relation ℓ₂ A} ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
     where
 
   open RelativeEquivalenceClass

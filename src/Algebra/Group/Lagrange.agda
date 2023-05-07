@@ -20,7 +20,7 @@ open import Base.Equality
   as ≡
   hiding ( refl
          )
-open import Base.Prop
+open import Base.IsProp
 open import Base.Decide
 open import Base.Nat
   as ℕ
@@ -98,8 +98,8 @@ module LeftCosets
     -- we have ϕ=ψ. This is something of a happy accident -- it is only true
     -- because composition in a group is an injection (and because we have axiom
     -- K enabled).
-    Prop:~ᴸ : ∀ {x y} → Prop (x ~ᴸ y)
-    Prop:~ᴸ = Prop.intro (λ{ (_ , γ) (_ , η) → Σ≡-intro-prop _ _ (aux γ η) }) where
+    IsProp:~ᴸ : ∀ {x y} → IsProp (x ~ᴸ y)
+    IsProp:~ᴸ = IsProp.intro (λ{ (_ , γ) (_ , η) → Σ≡-intro-prop _ _ (aux γ η) }) where
       abstract
         aux : ∀ {x y h₁ h₂}
                → x · ϕ h₁ ≡ y
@@ -131,7 +131,7 @@ module LeftCosets
   -- Image(ϕ).
   ≅Image : ∀ g → Σ G (_~ᴸ g) ≅ Image ϕ
   ≅Image g =
-      Σ-proj₂-≅-intro (λ x → Symmetric-Prop-≅ _~ᴸ_ x g) ⟨ ≅.trans ⟩ ≅.sym (≅.from-inj-and-surj (~ᴸ-map-injective g) (~ᴸ-map-surjective g))
+      Σ-proj₂-≅-intro (λ x → Symmetric-IsProp-≅ _~ᴸ_ x g) ⟨ ≅.trans ⟩ ≅.sym (≅.from-inj-and-surj (~ᴸ-map-injective g) (~ᴸ-map-surjective g))
 
 module _ {ℓ₁ ℓ₂}
          (G : Type ℓ₁) ⦃ _ : Group G ⦄ ⦃ _ : Finite G ⦄

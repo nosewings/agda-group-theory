@@ -1,4 +1,4 @@
-module Base.Prop where
+module Base.IsProp where
 
 open import Base.Type
 open import Base.Type.LogicalEquivalence
@@ -17,28 +17,28 @@ open import Base.Relation
          )
 open import Base.Equality
 
-record Prop {ℓ} (A : Type ℓ) : Type ℓ where
+record IsProp {ℓ} (A : Type ℓ) : Type ℓ where
   constructor intro
   field
     prop : (x y : A) → x ≡ y
-open Prop ⦃...⦄
+open IsProp ⦃...⦄
   public
 
 instance
-  Prop:≡ : ∀ {ℓ} {A : Type ℓ} {x y : A} → Prop (x ≡ y)
-  Prop:≡ = Prop.intro uip
+  IsProp:≡ : ∀ {ℓ} {A : Type ℓ} {x y : A} → IsProp (x ≡ y)
+  IsProp:≡ = IsProp.intro uip
 
-Symmetric-Prop-≅ :
+Symmetric-IsProp-≅ :
   ∀ {ℓ₁ ℓ₂}
     {A : Type ℓ₁}
-    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Symmetric _~_ ⦄
+    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ _ : Symmetric _~_ ⦄
   → ∀ x y → (x ~ y) ≅ (y ~ x)
-Symmetric-Prop-≅ _~_ x y = _≅_.intro (_↔_.intro sym sym) (_⇄_.intro (λ _ → prop _ _) λ _ → prop _ _)
+Symmetric-IsProp-≅ _~_ x y = _≅_.intro (_↔_.intro sym sym) (_⇄_.intro (λ _ → prop _ _) λ _ → prop _ _)
 
 Σ≡-intro-prop :
   ∀ {ℓ₁ ℓ₂}
     {A : Type ℓ₁} {B : A → Type ℓ₂}
-    ⦃ _ : ∀ {x} → Prop (B x) ⦄
+    ⦃ _ : ∀ {x} → IsProp (B x) ⦄
     (x y : Σ A B)
   → proj₁ x ≡ proj₁ y
   → x ≡ y
@@ -47,7 +47,7 @@ Symmetric-Prop-≅ _~_ x y = _≅_.intro (_↔_.intro sym sym) (_⇄_.intro (λ 
 to-prop-Σ-surj :
   ∀ {ℓ₁ ℓ₂ ℓ₃}
     {A : Type ℓ₁} {B : Type ℓ₂} {P : B → Type ℓ₃}
-    ⦃ _ : ∀ {x} → Prop (P x) ⦄
+    ⦃ _ : ∀ {x} → IsProp (P x) ⦄
     {f : A → Σ B P}
   → SplitSurjective (proj₁ ∘ f)
   → SplitSurjective f

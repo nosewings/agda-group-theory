@@ -21,7 +21,7 @@ open import Base.Equality
   hiding ( refl
          )
 open import Base.Decide
-open import Base.Prop
+open import Base.IsProp
 open import Base.WellFounded
   as WellFounded
 open import Base.Nat
@@ -49,7 +49,7 @@ open import Finite.UList.NonEmpty
 module _
     {ℓ₁ ℓ₂}
     (A : Type ℓ₁)
-    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
+    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
     where
 
   private
@@ -77,7 +77,7 @@ open RelativePartition
 module _
     {ℓ₁ ℓ₂}
     {A : Type ℓ₁}
-    {_~_ : Relation ℓ₂ A} ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
+    {_~_ : Relation ℓ₂ A} ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
     where
 
   elements-related-full : ∀ {xs} (c : RelativeEquivalenceClass A _~_ xs) → UL⁺.All (_~ UL⁺.head (elements c)) (elements c)
@@ -89,7 +89,7 @@ module _
 module _
     {ℓ₁ ℓ₂}
     (A : Type ℓ₁)
-    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄ ⦃ _ : ∀ {x y} → Decide (x ~ y) ⦄
+    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄ ⦃ _ : ∀ {x y} → Decide (x ~ y) ⦄
     where
 
   private
@@ -172,7 +172,7 @@ module _
 module _
     {ℓ₁ ℓ₂}
     (A : Type ℓ₁) ⦃ _ : Finite A ⦄
-    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
+    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
     where
 
   EquivalenceClass = RelativeEquivalenceClass A _~_ (elements-of A)
@@ -181,7 +181,7 @@ module _
 module _
     {ℓ₁ ℓ₂}
     (A : Type ℓ₁) ⦃ _ : Finite A ⦄
-    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄ ⦃ _ : ∀ {x y} → Decide (x ~ y) ⦄
+    (_~_ : Relation ℓ₂ A) ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄ ⦃ _ : ∀ {x y} → Decide (x ~ y) ⦄
     where
 
   partition : Partition A _~_
@@ -190,7 +190,7 @@ module _
 module _
     {ℓ₁ ℓ₂}
     {A : Type ℓ₁} ⦃ _ : Finite A ⦄
-    {_~_ : Relation ℓ₂ A} ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ eq : Equivalence _~_ ⦄
+    {_~_ : Relation ℓ₂ A} ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ eq : Equivalence _~_ ⦄
     where
 
   -- The elements of an equivalence class, together with their relatedness

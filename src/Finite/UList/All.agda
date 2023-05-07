@@ -6,7 +6,7 @@ open import Base.Type.Negation
 open import Base.Pi
 open import Base.Sigma
 open import Base.Equality
-open import Base.Prop
+open import Base.IsProp
 open import Base.Nat
 
 open import Finite.UList.Core
@@ -98,7 +98,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
   to-UList-length (Px ∷ ∀xsP) = cong succ (to-UList-length ∀xsP)
 
   to-UList-prop-lookup :
-      ⦃ _ : ∀ {x} → Prop (P x) ⦄
+      ⦃ _ : ∀ {x} → IsProp (P x) ⦄
       {xs : UList A}
       (∀xsP : All P xs)
       {x : A} → x ∈ xs

@@ -6,7 +6,7 @@ open import Base.Relation
 open import Base.Maybe
   as M
 open import Base.Equality
-open import Base.Prop
+open import Base.IsProp
 open import Base.Nat
 open import Base.List
   as L
@@ -26,7 +26,7 @@ open import Finite.Partition.Pseudo
 module _
     {ℓ₁ ℓ₂}
     {A : Type ℓ₁}
-    {_~_ : Relation ℓ₂ A} ⦃ _ : ∀ {x y} → Prop (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
+    {_~_ : Relation ℓ₂ A} ⦃ _ : ∀ {x y} → IsProp (x ~ y) ⦄ ⦃ _ : Equivalence _~_ ⦄
     where
 
   open ≡Reasoning
