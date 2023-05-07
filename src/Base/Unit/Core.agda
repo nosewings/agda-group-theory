@@ -5,11 +5,9 @@ open import Base.Pi.Core
 
 open import Agda.Builtin.Unit
   public
-  using (
-        )
   renaming ( ⊤ to 𝟙
+           ; tt to 0₁
            )
-
 ind :
   ∀ {ℓ}
     (P : 𝟙 → Type ℓ)

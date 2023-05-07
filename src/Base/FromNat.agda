@@ -5,6 +5,10 @@ open import Base.Level
 open import Base.Type
 open import Base.Pi.Core
 open import Base.Unit.Core
+  public
+  using ( 0₁
+        ; 𝟙
+        )
 open import Base.Nat.Core
   as ℕ
 
