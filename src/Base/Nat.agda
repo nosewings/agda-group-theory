@@ -85,11 +85,16 @@ m <′ n = succ m ≤′ n
 _>′_ : Relation 0 ℕ
 _>′_ = flip _<′_
 
-<′-wf : WellFounded _<′_
-<′-wf = acc ∘ aux where
-  aux : ∀ n x → x <′ n → Acc _<′_ x
-  aux (succ x) x refl        = <′-wf x
-  aux (succ n) x (succ x<′n) = aux n x x<′n
+module _ where
+
+  <′-wf : WellFounded _<′_
+  private
+    <′-wf′ : ∀ n x → x <′ n → Acc _<′_ x
+
+  <′-wf n = acc (<′-wf′ n)
+
+  <′-wf′ (succ x) x refl        = <′-wf x
+  <′-wf′ (succ n) x (succ x<′n) = <′-wf′ n x x<′n
 
 zero≤′ : ∀ n → zero ≤′ n
 zero≤′ zero     = refl
