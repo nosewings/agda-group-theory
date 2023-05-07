@@ -24,13 +24,13 @@ module _ {ℓ} {A : Type ℓ} where
   instance
 
     Reflexive:≼ : Reflexive _≼_
-    Reflexive:≼ = Reflexive.intro aux where
+    Reflexive:≼ = intro aux where
       aux : ∀ {xs} → xs ≼ xs
       aux {[]}              = []
       aux {x ∷ xs and x∉xs} = x ∷ aux
 
     Transitive:≼ : Transitive _≼_
-    Transitive:≼ = Transitive.intro aux where
+    Transitive:≼ = intro aux where
       aux : ∀ {xs ys zs} → xs ≼ ys → ys ≼ zs → xs ≼ zs
       aux xs≼ys       []          = xs≼ys
       aux xs≼ys       (x ∺ ys≼zs) = x ∺ aux xs≼ys ys≼zs
