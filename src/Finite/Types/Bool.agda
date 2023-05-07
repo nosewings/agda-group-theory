@@ -13,7 +13,7 @@ open import Finite.UList
 instance
 
   𝟚-UVec-Enumeration : Enumeration 𝟚-UList
-  𝟚-UVec-Enumeration = Enumeration.intro (𝟚.ind _ (here refl) (there (here refl)))
+  𝟚-UVec-Enumeration = intro (𝟚.ind _ (here refl) (there (here refl)))
 
   𝟚-Finite : Finite 𝟚
-  𝟚-Finite = Finite.intro 𝟚-UList
+  𝟚-Finite = intro 𝟚-UList

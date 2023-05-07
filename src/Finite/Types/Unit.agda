@@ -13,7 +13,7 @@ open import Finite.UList
 instance
 
   𝟙-UVec-Enumeration : Enumeration 𝟙-UList
-  𝟙-UVec-Enumeration = Enumeration.intro (const (here refl))
+  𝟙-UVec-Enumeration = intro (const (here refl))
 
   𝟙-Finite : Finite 𝟙
-  𝟙-Finite = Finite.intro 𝟙-UList
+  𝟙-Finite = intro 𝟙-UList
