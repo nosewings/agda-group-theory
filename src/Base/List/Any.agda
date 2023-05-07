@@ -69,4 +69,4 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
 
   instance
     Decide:Any : ⦃ _ : ∀ {x} → Decide (P x) ⦄ → ∀ {xs} → Decide (Any P xs)
-    Decide:Any = any? !!! _
+    Decide:Any ⦃ dec ⦄ = any? (λ _ → dec) _

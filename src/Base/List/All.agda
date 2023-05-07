@@ -58,7 +58,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {P : A → Type ℓ₂} where
 
   instance
     Decide:All : ⦃ _ : ∀ {x} → Decide (P x) ⦄ → ∀ {xs} → Decide (All P xs)
-    Decide:All = all? !!! _
+    Decide:All ⦃ dec ⦄ = all? (λ _ → dec) _
 
 map-compat :
   ∀ {ℓ₁ ℓ₂ ℓ₃}
