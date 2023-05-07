@@ -174,6 +174,7 @@ module _ {ℓ₁ ℓ₂}
   proj₁ lagrange = List.length (classes ~ᴸ-partition)
   proj₂ lagrange = aux where
     abstract
+      aux : size-of G ≡ List.length (classes ~ᴸ-partition) * size-of H
       aux = size-of G
               ≡⟨ total-length-is-length ~ᴸ-partition ⟩⁻¹
             total-length ~ᴸ-partition
